@@ -13,7 +13,7 @@ public final class ModItems {
     public static final Item COCAINE = new CocaineItem()
             .setRegistryName(Tags.MOD_ID, "cocaine")
             .setTranslationKey(Tags.MOD_ID + ".cocaine")
-            .setCreativeTab(CreativeTabs.MISC);
+            .setCreativeTab(CreativeTabs.FOOD);
 
     private ModItems() {
     }
