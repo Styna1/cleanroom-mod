@@ -70,7 +70,7 @@ configurations {
 }
 
 minecraft {
-    mcVersion.set('1.12.2')
+    mcVersion.set(propertyString('minecraft_version'))
 
     mcpMappingChannel.set(propertyString('mapping_channel'))
     mcpMappingVersion.set(propertyString('mapping_version'))

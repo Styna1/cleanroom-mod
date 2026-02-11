@@ -1,5 +1,5 @@
 {
-	"package": "",
+	"package": "${mixin_package}",
 	"required": true,
 	"refmap": "${mixin_refmap}",
 	"target": "@env(DEFAULT)",

@@ -1,6 +1,17 @@
 # Changelog
 
-## [1.0.0] - 2023-09-15
+## [0.0.1] - 2026-02-11
 
-### Added
-- This is a default template changelog that follows the [KeepAChangelog Convention](https://keepachangelog.com/en/1.1.0/)
+### Changed
+- Wired `build.gradle` to use `minecraft_version` from `gradle.properties` for centralized Minecraft target configuration.
+- Updated teleport dimension transfer to use `changeDimension(int)` for compatibility with Forge variants that changed `ITeleporter`.
+- Added cocaine consume command-based effect rolling: 4 weighted options, with a 1% chance to apply all configured effects.
+- Added a custom `privateserver:dizzy` effect and configured cocaine defaults to include it.
+- Home command permissions are explicitly open to non-ops (`/home`, `/sethome`, `/delhome`, `/renamehome`).
+- Added optional Chisel integration so sugar and cocaine are in the same chisel group (sugar can be chiseled into cocaine when Chisel is present).
+- Added `/home` teleport cost support with a default of `$20` (`teleport.json -> homeCost`).
+
+### Fixed
+- Bundled SQLite JDBC in the mod jar by switching dependency scope to `embed`, preventing `No suitable driver found` in Prism/Cleanroom runtime.
+- Explicitly loaded the SQLite driver before creating DB connections in economy, teleport, and discord link stores.
+- Players with the dizzy effect now have a configurable 15% trip chance per second that drops their held item.
