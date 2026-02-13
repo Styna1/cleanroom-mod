@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.1.0] - 2026-02-13
+
+### Added
+- Added `/pay <player> <amount>` player-to-player transfers for the economy module.
+- Added active-playtime economy rewards: players now earn `$150` every 30 minutes of non-AFK playtime with the message `(default) you've received $<amount> for playing on the server!`.
+- Added a high-memory safety chat warning that broadcasts `Server might crash, memory maxed.` when JVM memory usage becomes critical (with cooldown to prevent spam).
+- Added countdown ding sounds for `/home` and `/back` teleports each second during warmup, plus an arrival ding on completion.
+
+### Changed
+- Opened all permission level `0` commands by default in command permission checks, while keeping admin-level commands restricted.
+
+### Fixed
+- Fixed `/tpa` and `/tpahere` acceptance routing so the correct player is teleported to the correct destination.
+- Hardened cross-dimension teleport execution for `/home`, `/back`, and TPA flows by validating target dimensions before transfer.
+- Fixed default access behavior for `/back`, `/bal`, and `/baltop` by applying consistent level-0 permission handling.
+
 ## [0.0.2] - 2026-02-11
 
 ### Changed

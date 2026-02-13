@@ -5,6 +5,7 @@ import me.styna.privateserver.util.TextUtil;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
 
 public abstract class BasePrivateCommand extends CommandBase {
 
@@ -29,5 +30,11 @@ public abstract class BasePrivateCommand extends CommandBase {
         } catch (NumberFormatException exception) {
             throw new CommandException("Amount must be a non-negative number.");
         }
+    }
+
+    @Override
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+        // Open all level-0 commands to every player by default; keep admin commands restricted.
+        return getRequiredPermissionLevel() <= 0 || super.checkPermission(server, sender);
     }
 }

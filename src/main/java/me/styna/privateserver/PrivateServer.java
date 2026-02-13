@@ -10,6 +10,7 @@ import me.styna.privateserver.command.CommandEco;
 import me.styna.privateserver.command.CommandFly;
 import me.styna.privateserver.command.CommandHome;
 import me.styna.privateserver.command.CommandNick;
+import me.styna.privateserver.command.CommandPay;
 import me.styna.privateserver.command.CommandRenameHomei;
 import me.styna.privateserver.command.CommandSetHome;
 import me.styna.privateserver.command.CommandSpeed;
@@ -96,6 +97,7 @@ public class PrivateServer {
     public void onServerStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new CommandBal(this));
         event.registerServerCommand(new CommandBalTop(this));
+        event.registerServerCommand(new CommandPay(this));
         event.registerServerCommand(new CommandEco(this));
         event.registerServerCommand(new CommandNick(this));
         event.registerServerCommand(new CommandFly(this));

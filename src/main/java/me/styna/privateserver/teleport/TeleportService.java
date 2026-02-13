@@ -4,7 +4,9 @@ import me.styna.privateserver.config.ConfigService;
 import me.styna.privateserver.economy.EconomyService;
 import me.styna.privateserver.util.TextUtil;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.SoundCategory;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -151,8 +153,8 @@ public class TeleportService {
         }
 
         TeleportLocation destination = request.here
-                ? TeleportLocation.fromPlayer(target)
-                : TeleportLocation.fromPlayer(requester);
+                ? TeleportLocation.fromPlayer(requester)
+                : TeleportLocation.fromPlayer(target);
         EntityPlayerMP teleported = request.here ? target : requester;
         double cost = Math.max(0.0D, configService.getTeleportConfig().tpaCost);
 
@@ -258,6 +260,18 @@ public class TeleportService {
                 if (currentTick % 20L == 0L) {
                     long remainingSeconds = (long) Math.ceil(remainingTicks / 20.0D);
                     TextUtil.actionBar(player, "&eTeleporting in " + remainingSeconds + "s...");
+                    if (shouldPlayCountdownDing(pending.reason)) {
+                        player.world.playSound(
+                                null,
+                                player.posX,
+                                player.posY,
+                                player.posZ,
+                                SoundEvents.BLOCK_NOTE_PLING,
+                                SoundCategory.PLAYERS,
+                                0.35F,
+                                1.8F
+                        );
+                    }
                 }
                 continue;
             }
@@ -287,7 +301,27 @@ public class TeleportService {
             }
 
             recordBackLocation(player);
-            teleport(server, player, pending.destination);
+            if (!teleport(server, player, pending.destination)) {
+                TextUtil.send(player, "&cCould not complete teleport for that dimension.");
+                iterator.remove();
+                continue;
+            }
+            EntityPlayerMP updatedPlayer = server.getPlayerList().getPlayerByUUID(pending.playerId);
+            if (updatedPlayer != null) {
+                player = updatedPlayer;
+            }
+            if (shouldPlayCountdownDing(pending.reason)) {
+                player.world.playSound(
+                        null,
+                        player.posX,
+                        player.posY,
+                        player.posZ,
+                        SoundEvents.BLOCK_NOTE_PLING,
+                        SoundCategory.PLAYERS,
+                        0.45F,
+                        2.0F
+                );
+            }
             TextUtil.send(player, "&aTeleported.");
             iterator.remove();
         }
@@ -303,12 +337,15 @@ public class TeleportService {
         return (dx * dx) + (dy * dy) + (dz * dz) > 0.0625D;
     }
 
-    private static void teleport(MinecraftServer server, EntityPlayerMP player, TeleportLocation destination) {
+    private static boolean teleport(MinecraftServer server, EntityPlayerMP player, TeleportLocation destination) {
         if (player.dimension != destination.getDimension()) {
+            if (server.getWorld(destination.getDimension()) == null) {
+                return false;
+            }
             player.changeDimension(destination.getDimension());
             player = server.getPlayerList().getPlayerByUUID(player.getUniqueID());
             if (player == null) {
-                return;
+                return false;
             }
         }
         player.connection.setPlayerLocation(
@@ -318,6 +355,11 @@ public class TeleportService {
                 destination.getYaw(),
                 destination.getPitch()
         );
+        return true;
+    }
+
+    private static boolean shouldPlayCountdownDing(String reason) {
+        return "home".equals(reason) || "back".equals(reason);
     }
 
     public enum RenameHomeResult {
