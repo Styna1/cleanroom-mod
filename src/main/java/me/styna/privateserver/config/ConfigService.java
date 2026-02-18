@@ -44,6 +44,12 @@ public class ConfigService {
         this.chatConfig = loadFile(new File(modulesDir, "chat.json"), ChatConfig.class, ChatConfig::new);
         this.tabConfig = loadFile(new File(modulesDir, "tab.json"), TabConfig.class, TabConfig::new);
         this.teleportConfig = loadFile(new File(modulesDir, "teleport.json"), TeleportConfig.class, TeleportConfig::new);
+<<<<<<< HEAD
+
+        // Re-write economy defaults so newly added settings are visible and editable in economy.json.
+        writeFile(new File(modulesDir, "economy.json"), this.economyConfig);
+=======
+>>>>>>> 293884e14fd113d3dc79e066dba0a1ad26810e84
     }
 
     private void ensureDirectories() throws IOException {
