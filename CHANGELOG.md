@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.1.3] - 2026-02-15
+
+### Changed
+- Added workspace `.vscode/settings.json` to force Cursor/VS Code Java + Gradle tooling to Java 25 (`jdk-25.0.2.10-hotspot`) and avoid `UnsupportedClassVersionError` from RetroFuturaGradle.
+
+## [0.1.2] - 2026-02-15
+
+### Fixed
+- Updated playtime reward chat formatting so `(default)` is replaced with the configured main prefix (default `&7[&bPrivateServer&7]`), producing `[PrivateServer]` instead of showing `(default)`.
+
+## [0.1.1] - 2026-02-14
+
+### Changed
+- Moved playtime reward settings into `modules/economy.json` so server owners can tune:
+  - `playtimeRewardIntervalMinutes`
+  - `playtimeRewardAmount`
+  - `playtimeAfkTimeoutMinutes`
+  - `playtimeRewardEnabled`
+  - `playtimeRewardMessage`
+- Playtime reward messages now use the main mod prefix from `config.json` (default `[PrivateServer]`) instead of the literal `(default)` text.
+
+### Fixed
+- Fixed time-is-money reward handling to read runtime values from config and send rewards/messages consistently.
+- Fixed command activity tracking so command usage still counts as player activity even when combat tagging is disabled.
+
 ## [0.1.0] - 2026-02-13
 
 ### Added
